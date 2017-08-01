@@ -93,7 +93,7 @@ iris['target_names'] = [data.target_names[i] for i in data.target]
 plt.figure() 
 andrews_curves(iris,'target_names')
 
-##---matplotlib.imshow() can be used to checl correlation in a dataframe----#
+##---matplotlib.imshow() can be used to check correlation in a dataframe----#
 
 from sklearn.datasets import load_iris
 import matplotlib.pyplot as plt
