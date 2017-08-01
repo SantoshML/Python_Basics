@@ -91,4 +91,16 @@ data = load_iris()
 iris = pd.DataFrame(data.data,columns = data.feature_names)
 iris['target_names'] = [data.target_names[i] for i in data.target]
 plt.figure() 
-andrews_curves(iris,'target_names') 
+andrews_curves(iris,'target_names')
+
+##---matplotlib.imshow() can be used to checl correlation in a dataframe----#
+
+from sklearn.datasets import load_iris
+import matplotlib.pyplot as plt
+data = load_iris()
+iris = pd.DataFrame(data.data,columns = data.feature_names)
+plt.imshow(iris.corr(),cmap = plt.cm.Blues,interpolation = 'nearest')
+plt.colorbar()
+tick_marks = [i for i in range(len(iris.columns[0:4]))]
+plt.xticks(tick_marks,iris.columns[0:4],rotation = 'horizontal') 
+plt.yticks(tick_marks,iris.columns[0:4]) 
