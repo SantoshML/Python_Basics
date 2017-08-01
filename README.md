@@ -102,5 +102,5 @@ iris = pd.DataFrame(data.data,columns = data.feature_names)
 plt.imshow(iris.corr(),cmap = plt.cm.Blues,interpolation = 'nearest')
 plt.colorbar()
 tick_marks = [i for i in range(len(iris.columns[0:4]))]
-plt.xticks(tick_marks,iris.columns[0:4],rotation = 'horizontal') 
+plt.xticks(tick_marks,iris.columns[0:4],rotation = 'horizontal')  ## Include those columns only which you are using for corr matrix
 plt.yticks(tick_marks,iris.columns[0:4]) 
