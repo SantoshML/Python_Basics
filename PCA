@@ -1,0 +1,71 @@
+###------------------------------------PCA and Randomized PCA using armadillo standford dataset------------------------###
+
+
+Created on Fri Aug  4 07:28:53 2017
+
+@author: Santosh Kumar
+"""
+
+###--------------------Machine Learning Algorithm------------------------------###
+###----------------------------PCA---------------------------------------------###
+import os.path
+import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib
+from mpl_toolkits.mplot3d import Axes3D
+from plyfile import PlyData, PlyElement
+from sklearn.decomposition import PCA
+
+plt.style.use('ggplot')
+
+os.getcwd()
+os.chdir('F:\Data Science\Data Science_Python\Intermediate python_edx lab\DAT210x-master\Module4\Datasets')
+plyfile = PlyData.read('stanford_armadillo.ply')
+
+
+reduce_factor = 100
+
+armadillo = pd.DataFrame({
+    'x':plyfile['vertex']['z'][::reduce_factor],
+    'y':plyfile['vertex']['x'][::reduce_factor],
+    'z':plyfile['vertex']['y'][::reduce_factor],
+    })
+
+##------------------------------# Render the Original Armadillo#-------------###
+fig = plt.figure()
+ax = fig.add_subplot(111,projection = '3d')
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+ax.set_zlabel('Z')
+ax.set_title('Armadillo 3D')
+ax.scatter(armadillo.x,armadillo.y,armadillo.z,c = 'g',marker = '.',alpha = 0.75)
+
+###---------------------------Normal PCA-------------------------------------###
+
+Pca = PCA(n_components = 2,svd_solver = 'full')
+Pca.fit(armadillo)
+T = Pca.transform(armadillo)
+
+fig = plt.figure()
+ax = fig.add_subplot(111)
+ax.set_title('PCA_Armadillo 2D')
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+
+ax.scatter(T[:,0],T[:,1],c = 'b',marker = '.',alpha = 0.80)
+
+
+###----------------------------Randomized PCA-------------------------------###
+pca = PCA(n_components = 2,svd_solver = 'randomized')
+pca.fit(armadillo)
+R = pca.transform(armadillo)
+
+fig = plt.figure()
+ax = fig.add_subplot(111)
+ax.set_title('Randomized Armadillo')
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+
+ax.scatter(R[:,0],R[:,1],c = 'b',marker = '.',alpha = 0.80)
+
+
