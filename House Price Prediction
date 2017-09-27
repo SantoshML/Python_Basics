@@ -1,0 +1,89 @@
+##---------------------Kaggle:House Prices-------------------------------------##
+
+#No. of variable = 81
+# Target variable = SalePrice
+
+##---------------------Import all the required packages-------------------------##
+import os.path
+import pandas as pd
+import matplotlib
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+from scipy.stats import norm
+from sklearn.preprocessing import StandardScaler
+from scipy import stats
+import warnings
+warnings.filterwarnings('ignore')
+%matplotlib inline
+%matplotlib auto
+%matplotlib qt5
+plt.style.use('ggplot')
+
+os.getcwd()
+os.chdir('F:\Data Science\Kaggle\House Prices\Data')
+hp_train = pd.read_csv('train.csv')
+
+hp_train.columns.tolist()
+
+
+##----------------------Lets's analyze the Target variable-------------------##
+
+hp_train.SalePrice.describe()
+hp_train.SalePrice.median()
+sns.distplot(hp_train.SalePrice)
+hp_train.SalePrice.skew()
+hp_train.SalePrice.kurt()
+
+##-----------------------Relationship with Numerical features---------------##
+
+plt.scatter(x = hp_train.GrLivArea,y =  hp_train.SalePrice,c = 'g',alpha = 0.8)
+plt.xlabel('GrLivArea')
+plt.ylabel('SalePrice')
+plt.title('SalePrice Vs. GrLivArea')
+
+plt.scatter(x = hp_train.TotalBsmtSF,y = hp_train.SalePrice,c= 'r',alpha = 0.80)
+plt.xlabel('TotalBsmtSF')
+plt.title('SalePrice Vs. TotalBsmtSF')
+
+
+##-------------------Relationship with categorical features-------------------##
+
+ax = sns.boxplot(x = 'OverallQual',y ='SalePrice',data = hp_train)
+ax.axis(ymax= 800000)
+
+ax = sns.boxplot(x = 'YearBuilt',y = 'SalePrice',data = hp_train)
+ax.plt.xticks(rotation = 90)
+
+##---------------------Correlation matrix (heatmap style)--------------------##
+
+corrmat = hp_train.corr()
+f,ax  = plt.subplots(figsize = (80,80))
+sns.heatmap(corrmat,vmax = 0.8,square = True)
+plt.xticks(rotation = 45)
+plt.yticks(rotation = 45)
+sns.set(font_scale = 0.60)
+
+##-------------------------saleprice correlation matrix-----------------------##
+k=10
+cols = corrmat.nlargest(k,'SalePrice')['SalePrice'].index
+cm = np.corrcoef(hp_train[cols].values.T)
+sns.set(font_scale = 1)
+f,ax  = plt.subplots(figsize = (80,80))
+hm = sns.heatmap(cm,cbar = True,annot = True,square = True,fmt = '.2f',annot_kws = {'size':10},yticklabels = cols.values,xticklabels = cols.values)
+plt.xticks(rotation = 45)
+plt.yticks(rotation = 45)
+
+##------------------------------Sactter Plot----------------------------##
+
+f,ax = plt.subplots()
+sns.set()
+cols = ['SalePrice','OverallQual','GrLivArea','GarageCars','TotalBsmtSF','FullBath','YearBuilt']
+sns.pairplot(hp_train[cols],size = 2)
+
+plt.clf()
+plt.scatter(hp_train.TotalBsmtSF,hp_train.GrLivArea)
+plt.show()
+
+f,ax = plt.subplots()
+plt.scatter(hp_train.YearBuilt,hp_train.SalePrice)
